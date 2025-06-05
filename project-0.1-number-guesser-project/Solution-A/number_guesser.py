@@ -37,7 +37,7 @@ SCORE_REDUCTION = 10
 
 
 def validate_input(input_str: str) -> bool:
-    """Validate if the input is a digit and within tha valid range."""
+    """Validate if the input is a digit and within the valid range."""
     # 🔁 Logic is based on the original Pytopia version,  with added type hints and docstring
     if not input_str.isdigit():
         print("Invalid input. Please enter a number.")
@@ -52,7 +52,7 @@ def validate_input(input_str: str) -> bool:
     return True
 
 def get_valid_guess() -> int:
-    """Prompt the user untill a valid guess is provided or 'q' is entered."""
+    """Prompt the user until a valid guess is provided or 'q' is entered."""
     # 🆕 Extracted from the main loop to improve modularity and testability
     while True:
         guess = input(f"Enter your guess between {MIN_NUM} and {MAX_NUM} (or 'q' to quit): ")
