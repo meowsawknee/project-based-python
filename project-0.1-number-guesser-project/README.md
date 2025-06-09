@@ -26,7 +26,7 @@ The goal? Practice Python — but make it clean, fun, and extendable.
 
 ## 📦 Folder Structure
 
-\`\`\`
+```
 project-0.1-number-guesser-project/
 ├── Solution-A/                 # Beginner version - all logic in one file
 │   └── number_guesser.py
@@ -46,7 +46,7 @@ project-0.1-number-guesser-project/
 │   └── requirements.txt
 │
 └── README.md                  # ← You're here
-\`\`\`
+```
 
 ---
 

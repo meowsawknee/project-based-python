@@ -12,4 +12,5 @@ if __name__ == "__main__":
     print("Random password: ", rnd.generate())
 
     mem = MemorablePasswordGenerator(3, capitalization=True)
-    print("Memorable password: ", mem.generate()) 
+    print("Memorable password: ", mem.generate())
+    
