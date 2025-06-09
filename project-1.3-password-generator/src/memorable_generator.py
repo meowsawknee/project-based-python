@@ -43,3 +43,6 @@ class MemorablePasswordGenerator(PasswordGenerator):
         self._last_strength = estimate_strength(password) # Refacored: save password strength
         return password
     
+    def regenerate(self) -> str:
+        return self.generate()
+    

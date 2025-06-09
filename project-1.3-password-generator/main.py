@@ -1,6 +1,7 @@
 from src.pin_generator import PinCodeGenerator
 from src.random_generator import RandomPasswordGenerator
 from src.memorable_generator import MemorablePasswordGenerator
+from src.utils.uniqueness_tester import test_uniqueness
 
 
 # test
@@ -30,3 +31,5 @@ if __name__ == "__main__":
     mem.export_to_file("memorable.txt")
     mem.copy_to_clipboard()
     
+    generator = RandomPasswordGenerator(10, True, True)
+    test_uniqueness(generator, 1000)
