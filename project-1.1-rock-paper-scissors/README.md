@@ -1,3 +1,5 @@
+<img src="./images/banner.png" width="800">
+
 # 🪨 Rock Paper Scissors Game (Project 1.1)
 
 This project is a Python-based implementation of the classic game "Rock, Paper, Scissors", created as part of the Pytopia beginner-to-intermediate course. The game runs in the terminal and features a user vs. computer match with random choices, input validation, and a simple scoring system.
@@ -7,38 +9,37 @@ This project is a Python-based implementation of the classic game "Rock, Paper, 
 ---
 
 ## 📁 Project Structure
-
-\`\`\`
-project-1.1-rock-paper-scissors/
-│
-├── src/
-│   ├── game/
-│   │   ├── __init__.py
-│   │   ├── engine.py      # Core game logic and score tracking
-│   │   ├── player.py      # Handles user input with validation
-│   │   └── computer.py    # Generates random choices for the computer
-│   └── main.py            # Entry point that runs the game loop
-│
-├── tests/
-│   └── test_engine.py     # Unit tests for determine_winner()
-│
-├── README.md
-├── requirements.txt
-└── .vscode/launch.json    # Optional: for VSCode debugging
-\`\`\`
-
+```
+project-1.1-rock-paper-scissors/  
+│  
+├── src/  
+│   ├── game/  
+│   │   ├── __init__.py  
+│   │   ├── engine.py  
+│   │   ├── player.py  
+│   │   └── computer.py  
+│   └── main.py  
+│  
+├── tests/  
+│   └── test_engine.py  
+│  
+├── README.md  
+├── requirements.txt  
+└── .vscode/  
+     └── launch.json
+```
 ---
 
 ## 🎮 How to Play
 
 Run the game from the root directory:
 
-\`\`\`bash
+```bash
 python src/main.py
-\`\`\`
+```
 
-- Type \`rock\`, \`paper\`, or \`scissors\` to play  
-- Type \`q\` to quit the game  
+- Type `rock`, `paper`, or `scissors` to play  
+- Type `q` to quit the game  
 - First player to reach 5 points wins!
 
 ---
@@ -50,7 +51,7 @@ python src/main.py
 - User input validation  
 - Randomized computer moves  
 - Modular code with separation of concerns  
-- Unit tests using \`unittest\`
+- Unit tests using `unittest`
 
 ---
 
@@ -58,9 +59,9 @@ python src/main.py
 
 To run the tests:
 
-\`\`\`bash
+```bash
 PYTHONPATH=src python -m unittest tests.test_engine
-\`\`\`
+```
 
 ---
 
