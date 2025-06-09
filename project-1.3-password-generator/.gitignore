@@ -1,1 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
 
+# Virtual environment
+.env/
+.venv/
+env/
+venv/
+pbpenv/
+*.env
+
+# VSCode stuff
+.vscode/
+
+# Output files
+*.log
+
+# System
+.DS_Store
+Thumbs.db
