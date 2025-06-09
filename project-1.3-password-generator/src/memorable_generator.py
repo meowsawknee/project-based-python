@@ -1,7 +1,7 @@
 import random
 from nltk.corpus import stopwords
 from src.base import PasswordGenerator
-
+from src.utils.strength_estimator import estimate_strength
 
 class MemorablePasswordGenerator(PasswordGenerator):
     """
@@ -38,5 +38,8 @@ class MemorablePasswordGenerator(PasswordGenerator):
         words = random.sample(self.vocabulary, self.number_of_words)
         if self.capitalization:
             words = [word.capitalize() for word in words]
-        return self.separator.join(words)
+        password = self.separator.join(words)
+        self._last_password = password # Refacored: save last generated password
+        self._last_strength = estimate_strength(password) # Refacored: save password strength
+        return password
     

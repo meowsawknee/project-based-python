@@ -1,6 +1,7 @@
 import random
 import string
 from src.base import PasswordGenerator
+from src.utils.strength_estimator import estimate_strength
 
 class RandomPasswordGenerator(PasswordGenerator):
     """
@@ -26,5 +27,8 @@ class RandomPasswordGenerator(PasswordGenerator):
             self.characters += string.digits
     
     def generate(self) -> str:
-        return ''.join(random.choice(self.characters) for _ in range(self.length))
+        password = ''.join(random.choice(self.characters) for _ in range(self.length))
+        self._last_password = password # Refacored: save last generated password
+        self._last_strength = estimate_strength(password) # Refacored: save password strength
+        return password
     
