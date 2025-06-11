@@ -1,10 +1,29 @@
 import streamlit as st
+import random
 from src.pin_generator import PinCodeGenerator
 from src.memorable_generator import MemorablePasswordGenerator
 from src.random_generator import RandomPasswordGenerator
+from src.constants import DEALER_QUOTES
+from src.ui.export_tools import render_download_button, render_clipboard_button
 
 
-st.title("🔐 Password Dealers")
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    html, body, [class*="st-"], [class*="css"]  {
+        font-family: 'Press Start 2P', monospace !important;
+        font-size: 12px !important;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Press Start 2P', monospace !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+
+st.title("Password Dealers")
 st.markdown("_Post-Apocalyptic Security Providers_")
 
 
@@ -31,9 +50,14 @@ with col3:
 
 st.markdown("---")
 
+dealer = st.session_state.get("dealer")
+if dealer:
+    quote = random.choice(DEALER_QUOTES[dealer])
+    st.markdown(f"> *{quote}*")
+
 if st.session_state["dealer"] == "numbro":
     st.subheader("You chose: Numbro")
-    st.markdown("> *“Four digits. Nothing more. Pure calculation.”*")
+    
     
     length = st.slider("Length", min_value=4, max_value=32, value=18)
     only_even = st.checkbox("Only even digits")
@@ -53,15 +77,18 @@ if st.session_state["dealer"] == "numbro":
             password = generator.generate()
             strength = generator._last_strength
 
-            st.success(f"🔢 Your PIN: `{password}`")
-            st.info(f"🧠 Strength: {strength}")
+            render_download_button(password)
+            render_clipboard_button(password)
+
+            st.success(f"Your PIN: `{password}`")
+            st.info(f"Strength: {strength}")
         
         except Exception as e:
-            st.error(f"❌ Error: {e}")
+            st.error(f"Error: {e}")
 
 elif st.session_state["dealer"] == "memo":
     st.subheader("You chose: Memo")
-    st.markdown("> *“Security through poetry, darling.”*")
+
 
     num_words = st.slider("Number of words", min_value=2, max_value=12, value=3)
     separator = st.text_input("Separator character (optional)", value="-")
@@ -77,15 +104,18 @@ elif st.session_state["dealer"] == "memo":
             password = generator.generate()
             strength = generator._last_strength
 
-            st.success(f"🧠 Your password: {password}")
-            st.info(f"🔒 Strength: {strength}")
+            render_download_button(password)
+            render_clipboard_button(password)
+
+            st.success(f"Your password: {password}")
+            st.info(f"Strength: {strength}")
         
         except Exception as e:
-            st.error(f"❌ Error: {e}")
+            st.error(f"Error: {e}")
 
 elif st.session_state["dealer"] == "ciphera":
     st.subheader("You chose: Ciphera")
-    st.markdown("> *“Complexity is beauty.”*")
+    
 
     length = st.slider("Password length", min_value=8, max_value=32, value=12)
     use_digits = st.checkbox("Include digits", value=True)
@@ -103,8 +133,11 @@ elif st.session_state["dealer"] == "ciphera":
             password = generator.generate()
             strength = generator._last_strength
 
-            st.success(f"🔒 Your password: {password}")
-            st.info(f"🧠 Strength: {strength}")
+            render_download_button(password)
+            render_clipboard_button(password)
+
+            st.success(f"Your password: {password}")
+            st.info(f"Strength: {strength}")
         
         except Exception as e:
-            st.error(f"❌ Error: {e}")
+            st.error(f"Error: {e}")
