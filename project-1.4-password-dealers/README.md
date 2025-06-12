@@ -101,6 +101,12 @@ Even a password generator can tell a story if you let it.
 
 > **Built with pixels, purpose, and a bit of chaos.**
 
+## 📸 Screenshot
+
+Here’s a quick look at the app:
+
+![Password Dealers App Preview](screenshots/app_preview.png)
+
 ## 👤 Author
 
 **Hossein Mehrabi**  

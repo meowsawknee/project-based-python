@@ -1,4 +1,5 @@
 import random
+import nltk
 from nltk.corpus import stopwords
 from src.base import PasswordGenerator
 from src.utils.strength_estimator import estimate_strength
