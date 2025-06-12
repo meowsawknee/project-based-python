@@ -18,6 +18,9 @@ def render_clipboard_button(password: str):
     Simple native-style clipboard button using pyperclip.
     (Works only in local Python execution)
     """
+    # Note: Clipboard functionality via pyperclip may not work in all environments.
+    # It's purely optional and doesn't affect core features.
+
     if st.button("Copy to clipboard"):
         try:
             pyperclip.copy(password)
