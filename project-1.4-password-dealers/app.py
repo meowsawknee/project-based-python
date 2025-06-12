@@ -1,12 +1,13 @@
 import streamlit as st
 import random
+import os
 from src.pin_generator import PinCodeGenerator
 from src.memorable_generator import MemorablePasswordGenerator
 from src.random_generator import RandomPasswordGenerator
 from src.constants import DEALER_QUOTES
 from src.ui.export_tools import render_download_button, render_clipboard_button
 
-
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 st.markdown("""
     <style>
@@ -34,17 +35,17 @@ if "dealer" not in st.session_state:
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.image("https://raw.githubusercontent.com/meowsawknee/project-based-python/main/project-1.4-password-dealers/assets/numbro_placeholder.png", caption="Numbro")
+    st.image(os.path.join(APP_ROOT, "assets", "numbro_placeholder.png"), caption="Numbro")
     if st.button("Choose Numbro", key="choose_numbro"):
         st.session_state["dealer"] = "numbro"
 
 with col2:
-    st.image("https://raw.githubusercontent.com/meowsawknee/project-based-python/main/project-1.4-password-dealers/assets/memo_placeholder.png", caption="Memo")
+    st.image(os.path.join(APP_ROOT, "assets", "memo_placeholder.png"), caption="Memo")
     if st.button("Choose Memo", key="choose_memo"):
         st.session_state["dealer"] = "memo"
 
 with col3:
-    st.image("https://raw.githubusercontent.com/meowsawknee/project-based-python/main/project-1.4-password-dealers/assets/ciphera_placeholder.png", caption="Ciphera")
+    st.image(os.path.join(APP_ROOT, "assets", "ciphera_placeholder.png"), caption="Ciphera")
     if st.button("Choose Ciphera", key="choose_ciphera"):
         st.session_state["dealer"] = "ciphera"
 

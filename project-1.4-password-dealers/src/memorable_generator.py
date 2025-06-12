@@ -3,6 +3,11 @@ from nltk.corpus import stopwords
 from src.base import PasswordGenerator
 from src.utils.strength_estimator import estimate_strength
 
+try:
+    nltk.data.find("corpora/stopwords")
+except LookupError:
+    nltk.download("stopwords")
+    
 class MemorablePasswordGenerator(PasswordGenerator):
     """
     Generates a memorable password using a set of words.
