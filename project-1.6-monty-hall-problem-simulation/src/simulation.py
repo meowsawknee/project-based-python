@@ -1,4 +1,4 @@
-from game import simulate_game
+from src.game import simulate_game
 
 # Run the game multiple times (e.g., 1000 or 10,000 rounds)
 # to compare if the "switch" strategy performs better than "stay".
