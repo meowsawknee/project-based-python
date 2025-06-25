@@ -1,4 +1,5 @@
 import random
+from typing import Dict
 
 def simulate_game(switch: bool) -> bool:
     """Simulates one round of the Monty Hall problem.
@@ -32,3 +33,34 @@ def simulate_game(switch: bool) -> bool:
     
     # Return whether the final choice was the car
     return doors[final_choice] == 'car'
+
+
+def simulate_game_manual(player_choice: int, switch: bool) -> Dict[str, int]:
+    """Simulate a manual Monty Hall game with user input.
+
+    :param player_choice: Door number chosen by the player (0, 1, or 2)
+    :type player_choice: int
+    :param switch: Whether the player switches after the host reveals a goat.
+    :type switch: bool
+    :return: A dictionary with positions of car, goat doors, host reveal, and final result.
+    :rtype: dict
+    """
+    doors = ['car', 'goat', 'goat']
+    random.shuffle(doors)
+
+    host_reveal_door = random.choice(
+        [i for i in range(3) if i != player_choice and doors[i] == 'goat']
+    )
+
+    if switch:
+        final_choice = [i for i in range(3) if i != player_choice and i != host_reveal_door][0]
+    else:
+        final_choice = player_choice
+    
+    return {
+        'doors': doors,
+        'player_choice': player_choice,
+        'host_reveal': host_reveal_door,
+        'final_choice': final_choice,
+        'won': doors[final_choice] == 'car'
+    }
