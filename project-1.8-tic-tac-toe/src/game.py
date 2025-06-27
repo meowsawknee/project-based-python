@@ -79,7 +79,7 @@ class TicTacToe:
         """
         Returns a list of empty cells (used later by AI or GUI)
 
-        Retruns:
+        Returns:
             List[int]: List of cell indexes that are empty
         """
         return [i for i in range(1, 10) if self.board[i] == " "]
