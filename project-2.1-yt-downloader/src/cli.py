@@ -1,6 +1,7 @@
 import argparse
 import sys
 from downloader import YouTubeDownloader
+from search import YouTubeSearcher
 
 
 def parse_arguments():
@@ -56,10 +57,43 @@ def parse_arguments():
         help="End time to trim (format: HH:MM:SS)"
     )
 
+    parser.add_argument(
+        "--search",
+        type=str,
+        help="Search for a YouTube video"
+    )
+
     return parser.parse_args()
+
+def run_search_mode(query: str, max_results: int = 5) -> None:
+    """
+    Perform YouTube search and print results.
+    """
+    print(f"\nSearching YouTube for: '{query}'\n")
+    searcher = YouTubeSearcher(max_results=max_results)
+    results = searcher.search(query)
+
+    if not results:
+        print("No results found.")
+        return
+    
+    for idx, video in enumerate(results, 1):
+        print(f"{idx}. {video['title']} ({video['duration']})")
+        print(f"    Channel: {video['channel']}")
+        print(f"    URL: {video['url']}\n")
+
+
 
 def main():
     args = parse_arguments()
+
+    if args.search:
+        run_search_mode(args.search)
+        return
+    
+    if not args.url:
+        print("Error: You must provide --url for download or --search for searching.")
+        sys.exit(1)
 
     try:
         downloader = YouTubeDownloader(args.url)
