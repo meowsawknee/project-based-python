@@ -2,8 +2,9 @@ from pytube import YouTube
 from pytube.exceptions import VideoUnavailable, RegexMatchError
 import os
 import subprocess
-from typing import Optional
+from typing import Optional, Any
 import shutil
+from tqdm import tqdm
 
 
 class YouTubeDownloader:
@@ -19,6 +20,7 @@ class YouTubeDownloader:
         self.url = url
         self.yt: Optional[YouTube] = None
         self._load_video()
+        self._pbar = None
     
     def _load_video(self) -> None:
         """Attempts to load the YouTube object from the provided URL, with progress callbacks.
@@ -134,7 +136,7 @@ class YouTubeDownloader:
         except subprocess.CalledProcessError:
             raise RuntimeError("Failed to trim the video with ffmpeg.")
         
-    def _on_progress(self, stream, chunk, bytes_remaining) -> None:
+    def _on_progress(self, stream: Any, chunk: bytes, bytes_remaining: int) -> None:
         """Callback function to show download progress.
 
         Args:
@@ -142,16 +144,21 @@ class YouTubeDownloader:
             chunk: The data chunk received.
             bytes_remaining: The remaining bytes to be downloaded.
         """
-        total_size = stream.filesize
-        bytes_downloaded = total_size - bytes_remaining
-        percent = bytes_downloaded / total_size * 100
-        print(f"\rProgress: {percent:.2f}%", end="")
+        if self._pbar is None:
+            total = stream.filesize
+            self._pbar = tqdm(total=total, unit="B", unit_scale=True, desc="Downloading...")
+
+        bytes_downloaded = self._pbar.total - bytes_remaining
+        self._pbar.n = bytes_downloaded
+        self._pbar.refresh()
     
-    def _on_complete(self, stream, file_path) -> None:
+    def _on_complete(self, stream: Any, file_path: str) -> None:
         """Callback function to be called when download is complete.
 
         Args:
             stream: The completed stream.
             file_path: The path to the completed file.
         """
+        if self._pbar:
+            self._pbar.close()
         print("\nDownload completed successfully!")
