@@ -68,6 +68,13 @@ def parse_arguments():
 def run_search_and_select(query: str, max_results: int = 5) -> str:
     """
     Search YouTube and allow user to select a video URL
+
+    Args:
+        query (str): The search query.
+        max_results (int): Maximum number of results to display
+
+    Returns:
+        str: The URL of the selected video.
     """
     print(f"\nSearching YouTube for: '{query}'\n")
     searcher = YouTubeSearcher(max_results=max_results)
@@ -84,7 +91,7 @@ def run_search_and_select(query: str, max_results: int = 5) -> str:
 
     while True:
         try:
-            choice = int(input(f"Enter the numbe of th video you want to download [1-{max_results}]: "))
+            choice = int(input(f"Enter the number of th video you want to download [1-{max_results}]: "))
             if 1 <= choice <= max_results:
                 return results[choice - 1]['url']
             else:
