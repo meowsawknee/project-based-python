@@ -1,16 +1,21 @@
 from pytube import YouTube
 from pytube.exceptions import VideoUnavailable, RegexMatchError
-import os
-import subprocess
 from typing import Optional, Any
+import os
 import shutil
+import subprocess
 from tqdm import tqdm
-
+from src.utils import (
+    seconds_from_timestamp,
+    sanitize_filename,
+    ensure_dir,
+)
 
 class YouTubeDownloader:
     """
     A class for downloading YouTube videos and audio with optional trimming and progress feedback.
     """
+
     def __init__(self, url: str):
         """Initialize the YouTubeDownloader object with a video URL.
 
@@ -19,8 +24,8 @@ class YouTubeDownloader:
         """
         self.url = url
         self.yt: Optional[YouTube] = None
-        self._load_video()
         self._pbar = None
+        self._load_video()
     
     def _load_video(self) -> None:
         """Attempts to load the YouTube object from the provided URL, with progress callbacks.
@@ -38,21 +43,24 @@ class YouTubeDownloader:
         """
         Returns available streams in a dictionary:
         { 'video': [...], 'audio': [...] }
+
+        Returns:
+            dict: Dictionary containing video and audio stream lists.
         """
         streams = self.yt.streams
         return {
             "video": streams.filter(progressive=True, file_extension="mp4").order_by("resolution").desc(),
             "audio": streams.filter(only_audio=True).order_by("abr").desc()
         }
-    
+
     def download(
-            self,
-            output_path: str,
-            filename: str,
-            audio_only: bool = False,
-            start_time: Optional[str] = None,
-            end_time: Optional[str] = None,
-            resolution: Optional[str] = None
+        self,
+        output_path: str,
+        filename: str,
+        audio_only: bool = False,
+        start_time: Optional[str] = None,
+        end_time: Optional[str] = None,
+        resolution: Optional[str] = None
     ) -> str:
         """
         Downloads the selected stream and optionally trims it using ffmpeg.
@@ -62,19 +70,19 @@ class YouTubeDownloader:
             filename (str): Output file name (Without extension).
             audio_only (bool): Whether to download audio-only.
             start_time (str): Optional start time (e.g., "00:05:36").
-            end_time (str): Optional end time (e.g., "00:07:03:).
+            end_time (str): Optional end time (e.g., "00:07:03").
             resolution (str): Video resolution to filter (e.g., "720p"). 
 
         Returns:
             str: Path to the final saved file.
         """
-        if not os.path.exists(output_path):
-            os.makedirs(output_path)
-        
+        ensure_dir(output_path)
+        filename = sanitize_filename(filename)
+
         stream = None
         if audio_only:
             stream = self.yt.streams.filter(only_audio=True).order_by("abr").desc().first()
-            file_path = os.path.join(output_path, f"{filename}.mp4") # Will rename to .mp3
+            file_path = os.path.join(output_path, f"{filename}.mp4")  # Will rename to .mp3
         else:
             if resolution:
                 stream = self.yt.streams.filter(progressive=True, file_extension="mp4", res=resolution).first()
@@ -99,7 +107,7 @@ class YouTubeDownloader:
             return mp3_path
         
         return file_path
-    
+
     def _trim_with_ffmpeg(self, input_file: str, output_file: str, start: str, end: str) -> None:
         """Trims a media file using ffmpeg from start to end time.
 
@@ -108,15 +116,14 @@ class YouTubeDownloader:
             output_file (str): Path to the output trimmed file.
             start (str): Start time in format "HH:MM:SS".
             end (str): End time in format "HH:MM:SS"
-        
+
         Raises:
             EnvironmentError: If ffmpeg is not installed or not found in system PATH.
             RuntimeError: If ffmpeg execution fails.
         """
-        # Check if ffmpeg is installed
         if not shutil.which("ffmpeg"):
             raise EnvironmentError(
-                "'ffmpeg' is not installed or not fount in your system PATH\n"
+                "'ffmpeg' is not installed or not found in your system PATH.\n"
                 "Please install ffmpeg from https://ffmpeg.org/download.html and try again."
             )
         try:
@@ -135,7 +142,7 @@ class YouTubeDownloader:
             )
         except subprocess.CalledProcessError:
             raise RuntimeError("Failed to trim the video with ffmpeg.")
-        
+
     def _on_progress(self, stream: Any, chunk: bytes, bytes_remaining: int) -> None:
         """Callback function to show download progress.
 

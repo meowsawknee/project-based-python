@@ -5,6 +5,12 @@ from search import YouTubeSearcher
 
 
 def parse_arguments():
+    """
+    Parse command-line arguments.
+
+    Returns:
+        Namespace: Parsed arguments
+    """
     parser = argparse.ArgumentParser(
         description="YouTube Downloader - Download videos or audio from YouTube with optional trimming."
     )
@@ -12,7 +18,6 @@ def parse_arguments():
     parser.add_argument(
         "--url",
         type=str,
-        required=True,
         help="YouTube video URL"
     )
 
@@ -65,6 +70,7 @@ def parse_arguments():
 
     return parser.parse_args()
 
+
 def run_search_and_select(query: str, max_results: int = 5) -> str:
     """
     Search YouTube and allow user to select a video URL
@@ -83,7 +89,7 @@ def run_search_and_select(query: str, max_results: int = 5) -> str:
     if not results:
         print("No results found.")
         sys.exit(1)
-    
+
     for idx, video in enumerate(results, 1):
         print(f"{idx}. {video['title']} ({video['duration']})")
         print(f"    Channel: {video['channel']}")
@@ -91,7 +97,7 @@ def run_search_and_select(query: str, max_results: int = 5) -> str:
 
     while True:
         try:
-            choice = int(input(f"Enter the number of th video you want to download [1-{max_results}]: "))
+            choice = int(input(f"Enter the number of the video you want to download [1-{max_results}]: "))
             if 1 <= choice <= max_results:
                 return results[choice - 1]['url']
             else:
@@ -101,11 +107,14 @@ def run_search_and_select(query: str, max_results: int = 5) -> str:
 
 
 def main():
+    """
+    Main function to coordinate download or search based on CLI args.
+    """
     args = parse_arguments()
 
     if args.search:
         args.url = run_search_and_select(args.search)
-    
+
     if not args.url:
         print("Error: You must provide --url for download or --search for searching.")
         sys.exit(1)
@@ -123,7 +132,7 @@ def main():
         )
 
         print(f"\nFile saved at: {file_path}")
-    
+
     except Exception as e:
         print(f"\nError: {e}")
         sys.exit(1)
