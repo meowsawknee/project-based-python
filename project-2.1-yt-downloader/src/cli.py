@@ -2,6 +2,7 @@ import argparse
 import sys
 from downloader import YouTubeDownloader
 from search import YouTubeSearcher
+from config import DEFAULT_SEARCH_RESULTS, DEFAULT_OUTPUT_DIR, DEFAULT_FILENAME, DEFAULT_RESOLUTION, DEFAULT_AUDIO_ONLY
 
 
 def parse_arguments():
@@ -24,27 +25,28 @@ def parse_arguments():
     parser.add_argument(
         "--output",
         type=str,
-        default="downloads",
+        default=DEFAULT_OUTPUT_DIR,
         help="Folder to save the file (default: downloads/)"
     )
 
     parser.add_argument(
         "--name",
         type=str,
-        default="downloaded_file",
+        default=DEFAULT_FILENAME,
         help="Desired output file name (Without extension)"
     )
 
     parser.add_argument(
         "--quality",
         type=str,
-        default=None,
+        default=DEFAULT_RESOLUTION,
         help="Video resolution (e.g., 720p). Ignored in audio-only mode."
     )
 
     parser.add_argument(
         "--audio-only",
         action="store_true",
+        default=DEFAULT_AUDIO_ONLY,
         help="Download audio only (default: False)"
     )
 
@@ -71,7 +73,7 @@ def parse_arguments():
     return parser.parse_args()
 
 
-def run_search_and_select(query: str, max_results: int = 5) -> str:
+def run_search_and_select(query: str, max_results: int = DEFAULT_SEARCH_RESULTS) -> str:
     """
     Search YouTube and allow user to select a video URL
 
