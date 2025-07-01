@@ -65,9 +65,9 @@ def parse_arguments():
 
     return parser.parse_args()
 
-def run_search_mode(query: str, max_results: int = 5) -> None:
+def run_search_and_select(query: str, max_results: int = 5) -> str:
     """
-    Perform YouTube search and print results.
+    Search YouTube and allow user to select a video URL
     """
     print(f"\nSearching YouTube for: '{query}'\n")
     searcher = YouTubeSearcher(max_results=max_results)
@@ -75,21 +75,29 @@ def run_search_mode(query: str, max_results: int = 5) -> None:
 
     if not results:
         print("No results found.")
-        return
+        sys.exit(1)
     
     for idx, video in enumerate(results, 1):
         print(f"{idx}. {video['title']} ({video['duration']})")
         print(f"    Channel: {video['channel']}")
         print(f"    URL: {video['url']}\n")
 
+    while True:
+        try:
+            choice = int(input(f"Enter the numbe of th video you want to download [1-{max_results}]: "))
+            if 1 <= choice <= max_results:
+                return results[choice - 1]['url']
+            else:
+                print(f"Please enter a number between 1 and {max_results}.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
 
 
 def main():
     args = parse_arguments()
 
     if args.search:
-        run_search_mode(args.search)
-        return
+        args.url = run_search_and_select(args.search)
     
     if not args.url:
         print("Error: You must provide --url for download or --search for searching.")
